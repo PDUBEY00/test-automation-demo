@@ -1,0 +1,32 @@
+hub:
+  image: selenium/hub:3.141.59
+  environment:
+      GRID_TIMEOUT: 300000
+      GRID_NEW_SESSION_WAIT_TIMEOUT: 25000
+      GRID_MAX_SESSION: 50
+      GRID_BROWSER_TIMEOUT: 300000
+      TZ: Europe/London
+  ports:
+    - 4444:4444
+
+node-firefox:
+  image: selenium/node-firefox-debug:3.141.59
+  links:
+    - hub
+  volumes:
+    - ./config-firefox.json:/opt/selenium/config.json
+  ports:
+    - 5900
+  environment:
+    - TZ=Europe/London
+
+node-chrome:
+  image: selenium/node-chrome-debug:3.141.59
+  links:
+    - hub
+  volumes:
+    - ./config-chrome.json:/opt/selenium/config.json
+  ports:
+    - 5900
+  environment:
+    - TZ=Europe/London
