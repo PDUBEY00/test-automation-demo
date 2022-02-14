@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+spec:
+  securityContext:
+    runAsUser: 1000
+  imagePullSecrets: ['appops-jenkins-ci']
+  containers:
+    - name: jnlp
+      image: quay.io/turnitin/jenkins-jnlp-agent:latest
+      tty: true
+      securityContext:
+        runAsUser: 10000
+        allowPrivilegeEscalation: false
+    - name: javaqa
+      image: quay.io/turnitin/java-base:8
+      tty: true
+      securityContext:
+        runAsUser: 0
+        privileged: true
